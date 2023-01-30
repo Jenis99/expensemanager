@@ -4,20 +4,45 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+class UpdateData extends StatefulWidget {
+  var uid="";
+  var title="";
 
-class Addexpenses extends StatefulWidget {
+  UpdateData({required this.uid});
   @override
-  State<Addexpenses> createState() => _AddexpensesState();
+  State<UpdateData> createState() => _UpdateDataState();
 }
 
-class _AddexpensesState extends State<Addexpenses> {
+
+class _UpdateDataState extends State<UpdateData> {
   TextEditingController _title=TextEditingController();
   TextEditingController _description=TextEditingController();
   TextEditingController _amount=TextEditingController();
   TextEditingController dateinput=TextEditingController();
   var _value="Expenses";
-  var _selected ="Shopping";
+  var _selected ="food";
   var _method ="Cash";
+
+
+  getdata()async{
+    Databasehelper obj= new Databasehelper();
+    var singaldata = await obj.get_singledata(widget.uid);
+    setState(() {
+      _title.text=singaldata[0]["title"].toString();
+      _description.text=singaldata[0]["description"].toString();
+      _amount.text=singaldata[0]["amount"].toString();
+      dateinput.text=singaldata[0]["date"].toString();
+      _selected=singaldata[0]["category"].toString();
+      _value=singaldata[0]["type"].toString();
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,28 +199,28 @@ class _AddexpensesState extends State<Addexpenses> {
                               width:MediaQuery.of(context).size.width,
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton(
-                                value: _selected,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selected = val!;
-                                  });
-                                },
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text("Shopping",style: TextStyle(
-                                    ),),
-                                    value: "Shopping",),
-                                  DropdownMenuItem(
-                                    child: Text("Health Care"),
-                                    value: "Health Care",),
-                                  DropdownMenuItem(
-                                    child: Text("Food & Drinks"),
-                                    value: "food",),
-                                  DropdownMenuItem(
-                                    child: Text("Travel"),
-                                    value: "Travel",),
-                                ],
-                            ),
+                                  value: _selected,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      _selected = val!;
+                                    });
+                                  },
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text("Shopping",style: TextStyle(
+                                      ),),
+                                      value: "Shopping",),
+                                    DropdownMenuItem(
+                                      child: Text("Health Care"),
+                                      value: "Health Care",),
+                                    DropdownMenuItem(
+                                      child: Text("Food & Drinks"),
+                                      value: "food",),
+                                    DropdownMenuItem(
+                                      child: Text("Travel"),
+                                      value: "Travel",),
+                                  ],
+                                ),
                               ),
                             ),
                             Text("Payment Method",style: TextStyle(
@@ -231,31 +256,40 @@ class _AddexpensesState extends State<Addexpenses> {
                               ),
                             ),
                             Center(
-                              child:  ElevatedButton(onPressed: () async{
-                                var title=_title.text.toString();
-                                var type=_value.toString();
-                                var description=_description.text.toString();
-                                var amount=_amount.text.toString();
-                                var category=_selected.toString();
-                                var date = dateinput.text.toString();
-                                var method = _method.toString();
-                                Databasehelper obj = Databasehelper();
-                                var id = await obj.insertdata(title,type,description,category,amount,date,method);
-                                print("this is id :"+ id.toString());
+                              child:  Row(
+                                children: [
+                                  ElevatedButton(onPressed: () async{
+                                  var title=_title.text.toString();
+                                  var type=_value.toString();
+                                  var description=_description.text.toString();
+                                  var amount=_amount.text.toString();
+                                  var category=_selected.toString();
+                                  var date = dateinput.text.toString();
+                                  var method =_method.toString();
 
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context)=>ViewExpenses())
-                                );
 
-                                //Database
-                              }, child: Padding(
-                                padding: const EdgeInsets.only(left: 20.0,right: 20.0,top: 10.0,bottom: 10.0),
-                                child: Text("Add",style: TextStyle(
-                                    fontSize: 20.0
-                                ),),
-                              )),
+                                  Databasehelper obj=new Databasehelper();
+                                  var st = await obj.updatedata(title,type,description,amount,category,date,method,widget.uid);
+                                  //Database
+                                  if(st==1){
+                                    print("data Updated");
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context)=>ViewExpenses())
+                                    );
+                                  }
+                                  else{
+                                    print("data Not Updated");
+                                  }
+                                }, child: Padding(
+                                  padding: const EdgeInsets.only(left: 20.0,right: 20.0,top: 10.0,bottom: 10.0),
+                                  child: Text("Update",style: TextStyle(
+                                      fontSize: 20.0
+                                  ),),
+                                )),
+        ]
+                              ),
                             )
                           ],
                         )

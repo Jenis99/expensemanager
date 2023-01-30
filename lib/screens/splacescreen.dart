@@ -15,11 +15,13 @@ class _splacescreenState extends State<splacescreen> {
     Future.delayed(const Duration(seconds: 3), ()async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.containsKey("password")){
+      Navigator.of(context).pop();
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context)=>pinscreen())
       );
     }
     else{
+      Navigator.of(context).pop();
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context)=>setpinscreen())
       );

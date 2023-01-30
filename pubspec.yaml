@@ -31,6 +31,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_app_name:
+  flutter_launcher_icons:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,17 +41,30 @@ dependencies:
   shared_preferences:
   sqflite:
   path_provider:
+  intl:
+  syncfusion_flutter_datepicker:
+  otp_text_field:
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+flutter_app_name:
+  name: "Expense Manager"
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "img/wallet1.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "img/wallet1.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -68,7 +83,13 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - img/
-
+  fonts:
+    - family: AdventPro
+      fonts:
+        - asset: fonts/AdventPro.ttf
+    - family: Akshar
+      fonts:
+        - asset: fonts/Akshar-VariableFont_wght.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
