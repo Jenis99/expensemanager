@@ -1,4 +1,3 @@
-import 'package:expensemanager/screens/AddStock.dart';
 import 'package:expensemanager/screens/splacescreen.dart';
 import 'package:expensemanager/screens/viewdemo.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Akshar",
         primarySwatch: Colors.blue,
       ),
-      home:  AddStock(),
+      home:  splacescreen(),
     );
   }
 }

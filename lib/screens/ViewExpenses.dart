@@ -158,7 +158,44 @@ class _ViewExpensesState extends State<ViewExpenses> {
                                   ],
                                 ),
             )
-                            )
+                            ),
+                            GestureDetector(
+                                onTap: (){
+                                  {
+                                    AlertDialog alert = new AlertDialog(
+                                      title: Text("Warning!"),
+                                      content: Text("Are you sure you want to delete?"),
+                                      actions: [
+                                        ElevatedButton(onPressed: () async{
+                                          Navigator.of(context).pop();
+                                          var id = snapshot.data![index]["pid"].toString();
+                                          Databasehelper obj = new Databasehelper();
+                                          var status = await obj.delete_data(id);
+                                          if(status==1)
+                                          {
+                                            print("Record Deleted");
+                                            setState(() {
+                                              allexpenses = get_expense("all");
+                                            });
+                                          }
+                                          else
+                                          {
+                                            print("Record not Deleted");
+                                          }
+                                        }, child: Text("Yes")),
+                                        ElevatedButton(onPressed: (){
+                                          Navigator.of(context).pop();
+                                        }, child: Text("No")),
+                                      ],
+                                    );
+
+                                    showDialog(context: context, builder: (context){
+                                      return alert;
+                                    });
+
+                                  };
+                                },
+                                child: Icon(Icons.delete)),
                           ],
                         ),
                         Row(
